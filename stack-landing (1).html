@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stack — Organize everything, in one place</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBFAF7;
+    --paper-dim: #F3F1EA;
+    --ink: #191817;
+    --ink-soft: #57534A;
+    --ink-faint: #8A8578;
+    --border: #E8E6DE;
+    --accent: #5B5BD6;
+    --accent-dark: #4747B0;
+    --mint: #B4E3C5;
+    --butter: #F5D66B;
+    --blush: #F3B8C0;
+    --radius: 14px;
+    --max-w: 1160px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .wrap {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  img, svg { display: block; }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ---------- Nav ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(251, 250, 247, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+  }
+
+  .logo-mark {
+    width: 24px;
+    height: 24px;
+    position: relative;
+  }
+
+  .logo-mark span {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+  }
+
+  .logo-mark span:nth-child(1) { background: var(--accent); top: 0; left: 0; }
+  .logo-mark span:nth-child(2) { background: var(--butter); bottom: 0; right: 0; opacity: 0.9; }
+
+  .nav-links {
+    display: flex;
+    gap: 34px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+
+  .nav-links a { transition: color 0.15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    padding: 10px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(91,91,214,0.25);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(91,91,214,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .btn-ghost:hover { color: var(--ink); }
+
+  .btn-lg { padding: 14px 28px; font-size: 15.5px; border-radius: 10px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 96px 32px 60px;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    background: #ECECFB;
+    border: 1px solid #D9D9F5;
+    padding: 6px 12px;
+    border-radius: 100px;
+    margin-bottom: 22px;
+  }
+
+  .eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 4.4vw, 58px);
+    line-height: 1.06;
+    max-width: 620px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .hero h1 em::after {
+    content: "";
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    bottom: 6px;
+    height: 14px;
+    background: var(--butter);
+    z-index: -1;
+    border-radius: 3px;
+  }
+
+  .hero p.lede {
+    margin-top: 22px;
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 34px;
+  }
+
+  .hero-note {
+    font-size: 13.5px;
+    color: var(--ink-faint);
+  }
+
+  .hero-avatars {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .avatar-stack {
+    display: flex;
+  }
+
+  .avatar-stack .av {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--paper);
+    margin-left: -8px;
+  }
+  .avatar-stack .av:first-child { margin-left: 0; }
+  .av-1 { background: var(--mint); }
+  .av-2 { background: var(--blush); }
+  .av-3 { background: var(--butter); }
+  .av-4 { background: #D8D6F8; }
+
+  .hero-avatars .count {
+    font-size: 13.5px;
+    color: var(--ink-faint);
+  }
+  .hero-avatars .count b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Hero visual: kanban board mockup ---------- */
+  .board-visual {
+    position: relative;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .board-window {
+    width: 100%;
+    max-width: 480px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(25,24,23,0.08);
+    overflow: hidden;
+  }
+
+  .board-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--paper-dim);
+  }
+
+  .board-bar .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .board-bar .dot:nth-child(1) { background: var(--blush); }
+  .board-bar .dot:nth-child(2) { background: var(--butter); }
+  .board-bar .dot:nth-child(3) { background: var(--mint); }
+
+  .board-bar .board-title {
+    margin-left: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-faint);
+  }
+
+  .board-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .board-col {
+    background: #fff;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .board-col-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    margin-bottom: 2px;
+  }
+
+  .board-col-head .n {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+  .col-todo .n { background: var(--ink-faint); }
+  .col-doing .n { background: var(--accent); }
+  .col-done .n { background: var(--mint); }
+
+  .task-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 12px;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.2s ease;
+    animation: cardIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .task-card:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 22px rgba(25,24,23,0.1);
+    border-color: #DEDCD2;
+    cursor: grab;
+  }
+
+  .task-card .task-tag {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .tag-mint { background: var(--mint); color: #285C3D; }
+  .tag-blush { background: var(--blush); color: #7A2F3B; }
+  .tag-butter { background: var(--butter); color: #6B5410; }
+
+  .task-card .task-line {
+    height: 7px;
+    border-radius: 3px;
+    background: var(--paper-dim);
+    margin-bottom: 6px;
+  }
+  .task-card .task-line:last-of-type { margin-bottom: 0; width: 60%; }
+
+  .task-card .task-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .task-check {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .task-check.checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .task-check.checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+  }
+
+  .task-mini-av {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+  }
+
+  .task-card.ghost {
+    opacity: 0.5;
+    border-style: dashed;
+  }
+
+  .task-card:nth-child(2) { animation-delay: 0.08s; }
+  .task-card:nth-child(3) { animation-delay: 0.16s; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .task-card { transition: none; animation: none; }
+  }
+
+  @media (max-width: 640px) {
+    .board-cols { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Logos strip ---------- */
+  .logos {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 0;
+  }
+
+  .logos .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+
+  .logos .label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .logos .brands {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink-faint);
+    opacity: 0.75;
+  }
+
+  /* ---------- Section shell ---------- */
+  section { padding: 100px 32px; }
+
+  .section-head {
+    max-width: 620px;
+    margin: 0 auto 56px;
+    text-align: center;
+  }
+
+  .section-head .eyebrow { margin-bottom: 16px; }
+
+  .section-head h2 {
+    font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.15;
+  }
+
+  .section-head p {
+    margin-top: 16px;
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ---------- Features ---------- */
+  .features {
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(25,24,23,0.07);
+    border-color: #DEDCD2;
+  }
+
+  .chip {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .chip svg { width: 20px; height: 20px; }
+
+  .chip-mint { background: var(--mint); }
+  .chip-blush { background: var(--blush); }
+  .chip-butter { background: var(--butter); }
+
+  .feature-card h3 {
+    font-size: 18.5px;
+    margin-bottom: 10px;
+  }
+
+  .feature-card p {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ---------- Testimonials ---------- */
+  .testimonials { background: var(--paper-dim); }
+
+  .testi-grid {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .testi-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 30px 28px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .testi-strip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+  }
+
+  .strip-mint { background: var(--mint); }
+  .strip-blush { background: var(--blush); }
+  .strip-butter { background: var(--butter); }
+
+  .testi-card p.quote {
+    font-size: 15.5px;
+    color: var(--ink);
+    line-height: 1.65;
+    margin-bottom: 24px;
+  }
+
+  .testi-person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .testi-person .av {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+  }
+
+  .testi-person .name {
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+
+  .testi-person .role {
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- CTA band ---------- */
+  .cta-band {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    background: var(--ink);
+    border-radius: 24px;
+    padding: 72px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-band::before {
+    content: "";
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    background: var(--accent);
+    filter: blur(90px);
+    opacity: 0.35;
+    border-radius: 50%;
+    top: -140px;
+    right: -80px;
+  }
+
+  .cta-band h2 {
+    color: #fff;
+    font-size: clamp(28px, 3.4vw, 40px);
+    position: relative;
+  }
+
+  .cta-band p {
+    color: #C9C6BE;
+    margin-top: 14px;
+    font-size: 16px;
+    position: relative;
+  }
+
+  .cta-band .hero-actions {
+    justify-content: center;
+    margin-top: 32px;
+    position: relative;
+  }
+
+  .cta-band .btn-ghost { color: #C9C6BE; }
+  .cta-band .btn-ghost:hover { color: #fff; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 64px 32px 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-grid {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 40px;
+  }
+
+  .footer-brand p {
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--ink-faint);
+    max-width: 240px;
+    line-height: 1.6;
+  }
+
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    transition: color 0.15s ease;
+  }
+
+  .footer-col a:hover { color: var(--ink); }
+
+  .footer-bottom {
+    max-width: var(--max-w);
+    margin: 48px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--ink-faint);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---------- Focus states ---------- */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 56px; }
+    .hero p.lede, .hero h1 { max-width: 100%; }
+    .stack-visual { height: 300px; order: -1; }
+    .feature-grid, .testi-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    section { padding: 64px 24px; }
+    .cta-band { padding: 56px 28px; }
+  }
+
+  @media (max-width: 520px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .stack-visual .card { width: 210px; }
+    .hero-actions { flex-direction: column; align-items: flex-start; gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">
+      <div class="logo-mark"><span></span><span></span></div>
+      Stack
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#testimonials">Customers</a>
+      <a href="#">Pricing</a>
+      <a href="#">Changelog</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">Log in</a>
+      <a href="#" class="btn btn-primary">Get started</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" style="padding-top: 96px;">
+  <div>
+    <span class="eyebrow"><span class="eyebrow-dot"></span> Now with real-time sync</span>
+    <h1>Turn scattered notes into <em>one clear stack</em>.</h1>
+    <p class="lede">Stack is the workspace where docs, tasks, and ideas snap into organized blocks — so your team always knows where things are.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-primary btn-lg">Start for free</a>
+      <a href="#" class="btn btn-ghost">Watch a 90-second demo →</a>
+    </div>
+    <div class="hero-avatars">
+      <div class="avatar-stack">
+        <div class="av av-1"></div>
+        <div class="av av-2"></div>
+        <div class="av av-3"></div>
+        <div class="av av-4"></div>
+      </div>
+      <span class="count"><b>12,400+</b> teams already organized</span>
+    </div>
+  </div>
+
+  <div class="board-visual" aria-hidden="true">
+    <div class="board-window">
+      <div class="board-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="board-title">Launch plan</span>
+      </div>
+      <div class="board-cols">
+        <div class="board-col col-todo">
+          <div class="board-col-head"><span class="n"></span>To do</div>
+          <div class="task-card">
+            <span class="task-tag tag-blush">Design</span>
+            <div class="task-line" style="width:90%"></div>
+            <div class="task-line"></div>
+            <div class="task-foot">
+              <div class="task-check"></div>
+              <div class="task-mini-av" style="background: var(--blush);"></div>
+            </div>
+          </div>
+          <div class="task-card ghost">
+            <span class="task-tag tag-butter">Copy</span>
+            <div class="task-line" style="width:75%"></div>
+            <div class="task-line"></div>
+          </div>
+        </div>
+        <div class="board-col col-doing">
+          <div class="board-col-head"><span class="n"></span>Doing</div>
+          <div class="task-card">
+            <span class="task-tag tag-mint">Dev</span>
+            <div class="task-line" style="width:85%"></div>
+            <div class="task-line"></div>
+            <div class="task-foot">
+              <div class="task-check"></div>
+              <div class="task-mini-av" style="background: var(--mint);"></div>
+            </div>
+          </div>
+        </div>
+        <div class="board-col col-done">
+          <div class="board-col-head"><span class="n"></span>Done</div>
+          <div class="task-card">
+            <span class="task-tag tag-mint">QA</span>
+            <div class="task-line" style="width:70%"></div>
+            <div class="task-line"></div>
+            <div class="task-foot">
+              <div class="task-check checked"></div>
+              <div class="task-mini-av" style="background: #D8D6F8;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="logos">
+  <div class="wrap">
+    <span class="label">Trusted by organized teams at</span>
+    <div class="brands">
+      <span>Northwind</span>
+      <span>Fieldnote</span>
+      <span>Halcyon</span>
+      <span>Vantage Co.</span>
+      <span>Rowan</span>
+    </div>
+  </div>
+</div>
+
+<section id="features" class="features">
+  <div class="section-head reveal">
+    <span class="eyebrow"><span class="eyebrow-dot"></span> Features</span>
+    <h2>Everything finds its block.</h2>
+    <p>Three ways Stack keeps your team's work from turning back into chaos.</p>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card reveal">
+      <div class="chip chip-mint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#285C3D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+      </div>
+      <h3>Flexible blocks</h3>
+      <p>Drag docs, tasks, and databases into any layout. Every block adapts to how your team actually thinks.</p>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="chip chip-blush">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7A2F3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+      </div>
+      <h3>Real-time sync</h3>
+      <p>Every edit lands instantly for everyone in the workspace — no refreshing, no version conflicts.</p>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="chip chip-butter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6B5410" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg>
+      </div>
+      <h3>Smart search</h3>
+      <p>Find any note, task, or file in seconds — Stack indexes everything the moment it's created.</p>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials" class="testimonials">
+  <div class="section-head reveal">
+    <span class="eyebrow"><span class="eyebrow-dot"></span> Customers</span>
+    <h2>Teams that got their stack together.</h2>
+    <p>A few words from people who used to lose things in six different tools.</p>
+  </div>
+
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-strip strip-mint"></div>
+      <p class="quote">"We replaced four separate tools with Stack in a week. Nothing has gone missing since."</p>
+      <div class="testi-person">
+        <div class="av av-1"></div>
+        <div>
+          <div class="name">Maren Oduya</div>
+          <div class="role">Ops Lead, Fieldnote</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal">
+      <div class="testi-strip strip-blush"></div>
+      <p class="quote">"The block system finally matches how our design and eng teams actually work together."</p>
+      <div class="testi-person">
+        <div class="av av-2"></div>
+        <div>
+          <div class="name">Ilya Petrov</div>
+          <div class="role">Product Design, Halcyon</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal">
+      <div class="testi-strip strip-butter"></div>
+      <p class="quote">"Search alone saved us hours a week. We just find things now instead of asking around."</p>
+      <div class="testi-person">
+        <div class="av av-3"></div>
+        <div>
+          <div class="name">Dana Whitfield</div>
+          <div class="role">Chief of Staff, Vantage Co.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="cta-band reveal">
+    <h2>Get your team's work in one stack.</h2>
+    <p>Free for teams of up to 10. No credit card required.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-primary btn-lg">Start for free</a>
+      <a href="#" class="btn btn-ghost">Talk to sales →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-mark"><span></span><span></span></div>
+        Stack
+      </div>
+      <p>The workspace for teams who'd rather find things than search for them.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#">Features</a>
+      <a href="#">Pricing</a>
+      <a href="#">Changelog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About</a>
+      <a href="#">Careers</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#">Help center</a>
+      <a href="#">Community</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Stack. All rights reserved.</span>
+    <span>Made for people tired of six different tools.</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll-triggered reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
