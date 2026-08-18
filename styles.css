@@ -364,6 +364,33 @@
     border-radius: var(--radius);
   }
 
+  .icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .icon svg { width: 20px; height: 20px; }
+
+  .icon-1 { background: var(--mint); }
+  .icon-2 { background: var(--blush); }
+  .icon-3 { background: var(--butter); }
+
+  .feature-card h3 {
+    font-size: 18.5px;
+    margin-bottom: 10px;
+  }
+
+  .feature-card p {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
 
   /* Screen responsiveness section  */
   @media (max-width: 900px) {
