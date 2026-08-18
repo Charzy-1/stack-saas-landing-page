@@ -290,11 +290,20 @@
   .stack-visual:hover .card-3 { transform: rotate(2deg) translate(0px, 130px); }
 
   /* logos styling section */
+.logo-section {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 0;
+}
 
-   @media (prefers-reduced-motion: reduce) {
-    .stack-visual .card { transition: none; }
-  }
-
+.logo-section .wrap{
+  display: flex;
+  align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 28px;
+}
+  
 
   /* Screen responsiveness section  */
   @media (max-width: 900px) {
@@ -312,4 +321,8 @@
     .nav-links { display: none; }
     section { padding: 64px 24px; }
     .cta-band { padding: 56px 28px; }
+  }
+
+   @media (prefers-reduced-motion: reduce) {
+    .stack-visual .card { transition: none; }
   }
