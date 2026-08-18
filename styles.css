@@ -132,6 +132,18 @@
     align-items: center;
   }
 
+  .hero h1 {
+    font-size: clamp(38px, 4.4vw, 58px);
+    line-height: 1.06;
+    /* max-width: 650px; */
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    position: relative;
+    white-space: nowrap;
+  }
+
   .hero-parapgraph {
     margin-top: 22px;
     font-size: 18px;
@@ -200,11 +212,88 @@
     margin-left: -8px;
   }
 
-  /* .avatar-stack .av:first-child { margin-left: 0; } */
   .av-1 { background: var(--mint); }
   .av-2 { background: var(--blush); }
   .av-3 { background: var(--butter); }
   .av-4 { background: #D8D6F8; }
+
+  /* The hero stacked cards visual */
+
+  .stack-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 420px;
+    position:relative;
+    /* border: 2px solid; */
+    /* background: yellow; */
+  }
+
+  .stack-visual .card {
+    width: 260px;
+    min-height: 130px;
+    position:absolute;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(25,24,23,0.06);
+    padding: 18px 20px;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+    cursor: default;
+  }
+
+  .stack-visual:hover .card {
+    box-shadow: 0 16px 36px rgba(25,24,23,0.1);
+  }
+
+  .card .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+   .card .line {
+    height: 8px;
+    background: var(--paper-dim);
+    border-radius: 4px;
+    margin-bottom: 7px;
+  }
+
+  /* Card rotations design */
+  .card-1 {
+    transform: rotate(-6deg) translate(-88px, -46px);
+    z-index: 1;
+  }
+  .card-1 .tag { background: var(--blush); color: #7A2F3B; }
+
+  .card-2 {
+    transform: rotate(8deg) translate(70px, -8px);
+    z-index: 2;
+  }
+  .card-2 .tag { background: var(--mint); color: #285C3D; }
+
+  .card-3 {
+    transform: rotate(-3deg) translate(-30px, 64px);
+    z-index: 3;
+  }
+  .card-3 .tag { background: var(--butter); color: #6B5410; }
+
+  /* Card behaviours on hover */
+
+  .stack-visual:hover .card-1 { transform: rotate(-2deg) translate(-150px, -120px); }
+  .stack-visual:hover .card-2 { transform: rotate(1deg) translate(150px, -60px); }
+  .stack-visual:hover .card-3 { transform: rotate(2deg) translate(0px, 130px); }
+
+  /* logos styling section */
+
+   @media (prefers-reduced-motion: reduce) {
+    .stack-visual .card { transition: none; }
+  }
 
 
   /* Screen responsiveness section  */
