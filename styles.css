@@ -476,6 +476,73 @@
     background: var(--butter);
   }
 
+  /* ---------- CTA band ---------- */
+  .cta-band {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    background: var(--ink);
+    border-radius: 24px;
+    padding: 72px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-band::before {
+    content: "";
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    background: var(--accent);
+    filter: blur(90px);
+    opacity: 0.35;
+    border-radius: 50%;
+    top: -140px;
+    right: -80px;
+  }
+
+  .cta-band h2 {
+    color: #fff;
+    font-size: clamp(28px, 3.4vw, 40px);
+    position: relative;
+  }
+
+  .cta-band p {
+    color: #C9C6BE;
+    margin-top: 14px;
+    font-size: 16px;
+    position: relative;
+  }
+
+  .cta-band .hero-actions {
+    justify-content: center;
+    margin-top: 32px;
+    position: relative;
+  }
+
+  .cta-band .btn-ghost { color: #C9C6BE; }
+  .cta-band .btn-ghost:hover { color: #fff; }
+
+  footer {
+    padding: 64px 32px 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-bottom {
+    max-width: var(--max-w);
+    margin: 48px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--ink-faint);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  
+
   /* Screen responsiveness section  */
   @media (max-width: 900px) {
     .nav-links{
